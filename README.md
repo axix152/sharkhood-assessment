@@ -24,7 +24,7 @@ Reproduce the entire environment with a single command:
 docker compose up -d
 
 # 2. Seed the read-only staging database with the 3 sample provider collections
-docker compose exec app npm run seed
+npm run seed
 
 # 3. Trigger an ingestion run via the API
 curl -X POST http://localhost:3000/runs \

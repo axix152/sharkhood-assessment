@@ -10,10 +10,24 @@ services:
     volumes:
       - mongo_data:/data/db
     healthcheck:
-      test: ['CMD', 'mongosh', '--eval', 'db.adminCommand("ping")']
+      test: [ 'CMD', 'mongosh', '--eval', 'db.adminCommand("ping")' ]
       interval: 5s
       timeout: 5s
       retries: 5
+
+  # Visual GUI for MongoDB
+  mongo-express:
+    image: mongo-express:latest
+    container_name: factory_mongo_express
+    restart: unless-stopped
+    ports:
+      - '8081:8081'
+    environment:
+      - ME_CONFIG_MONGODB_SERVER=mongodb
+      - ME_CONFIG_MONGODB_PORT=27017
+    depends_on:
+      mongodb:
+        condition: service_healthy
 
   redis:
     image: redis:7-alpine
@@ -24,10 +38,21 @@ services:
     volumes:
       - redis_data:/data
     healthcheck:
-      test: ['CMD', 'redis-cli', 'ping']
+      test: [ 'CMD', 'redis-cli', 'ping' ]
       interval: 5s
       timeout: 5s
       retries: 5
+
+  # Visual GUI for Redis
+  redisinsight:
+    image: redis/redisinsight:latest
+    container_name: factory_redisinsight
+    restart: unless-stopped
+    ports:
+      - '5540:5540'
+    depends_on:
+      redis:
+        condition: service_healthy
 
   app:
     build:
