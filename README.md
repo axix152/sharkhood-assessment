@@ -49,7 +49,7 @@ curl http://localhost:3000/health
 ### Installation & Environment
 ```bash
 # Clone the repository
-git clone <repository-url>
+git clone https://github.com/axix152/sharkhood-assessment.git
 cd sharkhood-assessment
 
 # Install dependencies
