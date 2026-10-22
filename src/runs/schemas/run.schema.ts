@@ -22,6 +22,9 @@ export class CountersSchema {
   failed!: number;
 }
 
+// Generate the raw Mongoose schema for CountersSchema so it can be used as a Map value type
+const CountersMongooseSchema = SchemaFactory.createForClass(CountersSchema);
+
 @Schema({ _id: false })
 export class ErrorSampleSchema {
   @Prop({ required: true })
@@ -63,10 +66,10 @@ export class Run {
     limit?: number;
   };
 
-  @Prop({ type: CountersSchema, default: () => ({ read: 0, transformed: 0, written: 0, skipped: 0, failed: 0 }) })
+  @Prop({ type: CountersMongooseSchema, default: () => ({ read: 0, transformed: 0, written: 0, skipped: 0, failed: 0 }) })
   counters!: CountersSchema;
 
-  @Prop({ type: Map, of: CountersSchema, default: () => ({}) })
+  @Prop({ type: Map, of: CountersMongooseSchema, default: () => ({}) })
   collectionCounters!: Map<string, CountersSchema>;
 
   @Prop({ type: Date })
